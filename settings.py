@@ -5,10 +5,10 @@ class Settings:
     # is_dry_run and post_check_frequency_mins should not be overriden
     # set to True to prevent any bot actions (report, remove, comments)
     is_dry_run = False
-    post_check_frequency_mins = 0.1
+    post_check_frequency_mins = 5
 
     report_submission_statement_insufficient_length = True
-    report_stale_unmoderated_posts = True
+    report_stale_unmoderated_posts = False
     report_submission_statement_timeout = True
 
     post_check_threshold_mins = 2 * 60
@@ -17,7 +17,7 @@ class Settings:
     stale_post_check_threshold_mins = 12 * 60
 
     submission_statement_pin = True
-    submission_statement_time_limit_mins = 2
+    submission_statement_time_limit_mins = 10
     submission_statement_minimum_char_length = 150
     submission_statement_bot_prefix = "The following submission statement was provided by"
     # replies to post if ss is invalid
@@ -31,14 +31,7 @@ class Settings:
     submission_statement_edit_support = True
 
     low_effort_flair = ["casual friday", "low effort", "humor", "humour"]
-    ss_removal_reason = ("Your post has been removed for not including a submission statement, "
-                         "meaning post text or a comment on your own post that provides context for the link. "
-                         "If you still wish to share your post you must resubmit your link "
-                         "accompanied by a submission statement of at least "
-                         f"{str(submission_statement_minimum_char_length)} characters. "
-                         "\n\n"
-                         "This is a bot. Replies will not receive responses. "
-                         "Please message the moderators if you feel this was an error.")
+    ss_removal_reason = ("Post removed for failing to provide details about its relevance. If you feel this is in error, please contact the moderators.")
     casual_hour_removal_reason = ("Your post has been removed because it was flaired as either "
                                   "Casual Friday, Humor, or Low Effort and it was not posted "
                                   "during Casual Friday. "
@@ -75,7 +68,7 @@ class Settings:
 
 
 class CollapseSettings(Settings):
-    report_stale_unmoderated_posts = True
+    report_stale_unmoderated_posts = False
 
     submission_statement_final_reminder = True
     submission_statement_on_topic_reminder = True

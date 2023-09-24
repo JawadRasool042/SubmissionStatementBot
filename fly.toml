@@ -1,18 +1,11 @@
-# fly.toml app configuration file generated for highstrangenessbot on 2023-09-25T01:07:52+05:00
+# fly.toml app configuration file generated for highstrangenessbot on 2023-09-24T23:42:33Z
 #
 # See https://fly.io/docs/reference/configuration/ for information about how to use this file.
 #
 
 app = "highstrangenessbot"
 primary_region = "dfw"
+kill_signal = "SIGINT"
+kill_timeout = "5s"
 
 [build]
-  image = "flyio/hellofly:latest"
-
-[http_service]
-  internal_port = 8080
-  force_https = true
-  auto_stop_machines = true
-  auto_start_machines = true
-  min_machines_running = 0
-  processes = ["app"]

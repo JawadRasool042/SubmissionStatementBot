@@ -139,9 +139,9 @@ class Janitor:
         if not post.has_low_effort_flair(settings):
             return
 
-        if not post.submitted_during_casual_hours():
-            self.reddit_handler.remove_content(post.submission, settings.casual_hour_removal_reason,
-                                               "low effort flair")
+        # if not post.submitted_during_casual_hours():
+        #     self.reddit_handler.remove_content(post.submission, settings.casual_hour_removal_reason,
+        #                                        "low effort flair")
 
     def handle_submission_statement(self, subreddit_tracker, post, ss_prefix):
         settings = subreddit_tracker.settings
@@ -193,8 +193,8 @@ class Janitor:
         submission_statement = post.find_submission_statement()
         submission_statement_state = Janitor.validate_submission_statement(settings, submission_statement)
 
-        timeout_mins = settings.submission_statement_time_limit_mins
-        reminder_mins = timeout_mins / 2
+        timeout_mins = settings.submission_statement_time_limit_mins + 3
+        reminder_mins = settings.submission_statement_time_limit_mins
 
         if not ss_optional:
             self.ss_on_topic_check(subreddit_tracker.monitored_ss_replies, settings, post,
@@ -329,10 +329,9 @@ class Janitor:
             else f"The submission statement I identified is too short ({len(submission_statement.body)}" \
                  f" chars):\n> {submission_statement.body} \n\n" \
                  f"https://old.reddit.com{submission_statement.permalink}"
-        reminder_response = f"{reminder_identifier} within {timeout_mins} min. {reminder_detail}\n\n" \
-                            f"{settings.submission_statement_rule_description}.\n\n" \
-                            "Please message the moderators if you feel this was an error. " \
-                            "Responses to this comment are not monitored."
+        reminder_response = "(Do Not Reply)\n\n" \
+            f"Stranger: Please comment your Submission of Strangeness within {Settings.submission_statement_time_limit_mins} minutes and provide a brief summary/explanation what the post is about and/or why it is relevant to the sub.\n\n" \
+                 "For image posts, please describe the image and provide supporting evidence for any claim made."
         self.reddit_handler.reply_to_content(post.submission, reminder_response, pin=False, lock=True)
 
     def handle_posts(self, subreddit_tracker):

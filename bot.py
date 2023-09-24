@@ -1,6 +1,5 @@
 import calendar
 import traceback
-from threading import Thread
 
 import config
 from datetime import datetime, timedelta
@@ -8,7 +7,6 @@ from enum import Enum
 import os
 import praw
 
-from discord_client import DiscordClient
 from reddit_actions_handler import RedditActionsHandler
 from settings import *
 import time
@@ -85,8 +83,7 @@ class SubmissionStatementState(str, Enum):
 
 
 class Janitor:
-    def __init__(self, discord_client, bot_username, reddit, reddit_handler):
-        self.discord_client = discord_client
+    def __init__(self, bot_username, reddit, reddit_handler):
         self.bot_username = bot_username
         self.reddit = reddit
         self.reddit_handler = reddit_handler
@@ -173,7 +170,6 @@ class Janitor:
                 except Exception as e:
                     message = f"Exception in identifying ss edits, won't edit." \
                               f" {post.submission.title}: {e}\n```{traceback.format_exc()}```"
-                    self.discord_client.send_error_msg(message)
                     print(message)
             return
 
@@ -353,7 +349,6 @@ class Janitor:
                 self.handle_submission_statement(subreddit_tracker, post, prefix)
             except Exception as e:
                 message = f"Exception when handling post {post.submission.title}: {e}\n```{traceback.format_exc()}```"
-                self.discord_client.send_error_msg(message)
                 print(message)
 
     def handle_stale_unmoderated_posts(self, subreddit_tracker):
@@ -421,19 +416,9 @@ if __name__ == "__main__":
     client_secret = os.environ.get("CLIENT_SECRET", config.CLIENT_SECRET)
     bot_username = os.environ.get("BOT_USERNAME", config.BOT_USERNAME)
     bot_password = os.environ.get("BOT_PASSWORD", config.BOT_PASSWORD)
-    discord_token = os.environ.get("DISCORD_TOKEN", config.DISCORD_TOKEN)
-    discord_error_guild_name = os.environ.get("DISCORD_ERROR_GUILD", config.DISCORD_ERROR_GUILD)
-    discord_error_channel_name = os.environ.get("DISCORD_ERROR_CHANNEL", config.DISCORD_ERROR_CHANNEL)
     subreddits_config = os.environ.get("SUBREDDITS", config.SUBREDDITS)
     subreddit_names = [subreddit.strip() for subreddit in subreddits_config.split(",")]
     print("CONFIG: subreddit_names=" + str(subreddit_names) + ", client_id=" + client_id)
-
-    discord_client = DiscordClient(discord_error_guild_name, discord_error_channel_name)
-    discord_client.add_commands()
-    Thread(target=discord_client.run, args=(discord_token,)).start()
-
-    while not discord_client.is_ready:
-        time.sleep(1)
 
     while True:
         try:
@@ -446,7 +431,7 @@ if __name__ == "__main__":
                 password=bot_password
             )
 
-            reddit_handler = RedditActionsHandler(reddit, discord_client)
+            reddit_handler = RedditActionsHandler(reddit)
 
             subreddit_trackers = list()
             for subreddit_name in subreddit_names:
@@ -456,7 +441,7 @@ if __name__ == "__main__":
                 subreddit_tracker = SubredditTracker(subreddit, settings)
                 subreddit_trackers.append(subreddit_tracker)
 
-            janitor = Janitor(discord_client, bot_username, reddit, reddit_handler)
+            janitor = Janitor(bot_username, reddit, reddit_handler)
             while True:
                 for subreddit_tracker in subreddit_trackers:
                     try:
@@ -467,12 +452,10 @@ if __name__ == "__main__":
                         janitor.handle_monitored_ss_replies(subreddit_tracker)
                     except Exception as e:
                         message = f"Exception when handling all posts: {e}\n```{traceback.format_exc()}```"
-                        discord_client.send_error_msg(message)
                         print(message)
                 time.sleep(Settings.post_check_frequency_mins * 60)
         except Exception as e:
             message = f"Exception in main processing: {e}\n```{traceback.format_exc()}```"
-            discord_client.send_error_msg(message)
             print(message)
             time.sleep(Settings.post_check_frequency_mins * 60)
 

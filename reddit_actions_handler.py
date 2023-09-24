@@ -9,9 +9,8 @@ class RedditActionsHandler:
     max_retries = 3
     retry_delay_secs = 10
 
-    def __init__(self, reddit, discord_client):
+    def __init__(self, reddit):
         self.reddit = reddit
-        self.discord_client = discord_client
         self.last_call_time = 0
 
     def remove_content(self, content, external_removal_reason, internal_removal_reason, reply=True):
@@ -58,7 +57,6 @@ class RedditActionsHandler:
                 return result
             except RedditAPIException as e:
                 message = f"Exception in RedditRetry: {e}\n```{traceback.format_exc()}```"
-                self.discord_client.send_error_msg(message)
                 print(message)
                 if i < self.max_retries - 1:
                     print(f"Retrying in {self.retry_delay_secs} seconds...")

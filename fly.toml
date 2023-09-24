@@ -1,8 +1,18 @@
-# fly.toml file generated for submission-bot on 2022-11-19T00:15:56Z
+# fly.toml app configuration file generated for highstrangenessbot on 2023-09-25T01:07:52+05:00
+#
+# See https://fly.io/docs/reference/configuration/ for information about how to use this file.
+#
 
-app = "submission-bot"
-kill_signal = "SIGINT"
-kill_timeout = 5
-processes = []
+app = "highstrangenessbot"
+primary_region = "dfw"
 
-[env]
+[build]
+  image = "flyio/hellofly:latest"
+
+[http_service]
+  internal_port = 8080
+  force_https = true
+  auto_stop_machines = true
+  auto_start_machines = true
+  min_machines_running = 0
+  processes = ["app"]

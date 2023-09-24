@@ -5,11 +5,11 @@ class Settings:
     # is_dry_run and post_check_frequency_mins should not be overriden
     # set to True to prevent any bot actions (report, remove, comments)
     is_dry_run = False
-    post_check_frequency_mins = 5
+    post_check_frequency_mins = 0.1
 
-    report_submission_statement_insufficient_length = False
-    report_stale_unmoderated_posts = False
-    report_submission_statement_timeout = False
+    report_submission_statement_insufficient_length = True
+    report_stale_unmoderated_posts = True
+    report_submission_statement_timeout = True
 
     post_check_threshold_mins = 2 * 60
     consecutive_old_posts = 5
@@ -17,18 +17,18 @@ class Settings:
     stale_post_check_threshold_mins = 12 * 60
 
     submission_statement_pin = True
-    submission_statement_time_limit_mins = 30
+    submission_statement_time_limit_mins = 2
     submission_statement_minimum_char_length = 150
     submission_statement_bot_prefix = "The following submission statement was provided by"
     # replies to post if ss is invalid
-    submission_statement_final_reminder = False
+    submission_statement_final_reminder = True
     # replies to ss if ss doesn't contain any keywords with "related to <response>"
-    submission_statement_on_topic_reminder = False
+    submission_statement_on_topic_reminder = True
     submission_statement_on_topic_keywords = []
     submission_statement_on_topic_response = ""
-    submission_statement_on_topic_check_downvotes = False
+    submission_statement_on_topic_check_downvotes = True
     submission_statement_on_topic_removal_score = -50000
-    submission_statement_edit_support = False
+    submission_statement_edit_support = True
 
     low_effort_flair = ["casual friday", "low effort", "humor", "humour"]
     ss_removal_reason = ("Your post has been removed for not including a submission statement, "

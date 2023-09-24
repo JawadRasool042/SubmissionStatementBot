@@ -1,13 +1,8 @@
 # Reddit
-BOT_USERNAME = 'ReallyCoolBot'
-BOT_PASSWORD = 'password'
-CLIENT_ID = 'asdfasdfasdf'
-CLIENT_SECRET = 'asdfasdfasdf'
-
-# Discord
-DISCORD_TOKEN = 'asdfasdfasdfY'
-DISCORD_ERROR_GUILD = 'SomeDiscord'
-DISCORD_ERROR_CHANNEL = 'SomeDiscordChannel'
+BOT_USERNAME = 'strangenessbot'
+BOT_PASSWORD = '5trangene55Bot'
+CLIENT_ID = 'AYQvcJdz-sooU0C9JancSA'
+CLIENT_SECRET = 'hUqTEmKJJMf1Td6Otv7hMw62uMKR-w'
 
 # Bot
-SUBREDDITS = 'SomeSubreddit,SomeOtherSubreddit'
+SUBREDDITS = 'designpage'
